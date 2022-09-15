@@ -1,21 +1,37 @@
 import sys
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import *
 
-# UI파일 연결
-# UI파일 위치를 잘 적어 넣어준다.
-form_class = uic.loadUiType(r"Excel.ui")[0]
 
-# 프로그램 메인을 담당하는 Class 선언
-class MainClass(QMainWindow, form_class):
-    def __init__(self) :
-        QMainWindow.__init__(self)
-        # 연결한 Ui를 준비한다.
-        self.setupUi(self)
-        # 화면을 보여준다.
-        self.show()
-        
-if __name__ == "__main__" :
-    app = QApplication(sys.argv) 
-    window = MainClass() 
+class MyWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setupUI()
+
+
+    def setupUI(self):
+        self.setGeometry(1600,800,1000,1000)
+        self.setWindowTitle('Smartstore_Excel')
+
+        self.pushButton = QPushButton('File Open')
+        self.pushButton.clicked.connect(self.pushButtonClicked)
+        self.label = QLabel()
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.pushButton)
+        layout.addWidget(self.label)
+
+        self.setLayout(layout)
+
+
+    def pushButtonClicked(self):
+        fname = QFileDialog.getOpenFileName(self)
+        self.label.setText(fname[0])
+
+
+
+if __name__=='__main__':
+    app = QApplication(sys.argv)
+    window = MyWindow()
+    window.show()
     app.exec_()
